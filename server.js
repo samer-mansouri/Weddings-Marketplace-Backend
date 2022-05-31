@@ -10,6 +10,7 @@ const port = process.env.PORT || API_PORT;
 const UserRoutes = require('./routes/UserRoutes');
 const AnnonceRoutes = require('./routes/AnnonceRoutes');
 const CategoryRoutes = require('./routes/CategoryRoutes');
+const ReservationRoutes = require('./routes/ReservationRoutes');
 /*const AdminRoutes = require('./routes/AdminRoutes');
 const VehiculeRoutes = require('./routes/VehiculeRoutes');
 const ReservationRoutes = require('./routes/ReservationRoutes');
@@ -25,6 +26,7 @@ server.listen(port, () => {
 app.use('/',  UserRoutes.router);
 app.use('/',  AnnonceRoutes.router);
 app.use('/',  CategoryRoutes.router);
+app.use('/',  ReservationRoutes.router);
 /*app.use('/',  VehiculeRoutes.router);
 app.use('/',  ReservationRoutes.router);
 app.use('/',  TrajetRoutes.router);

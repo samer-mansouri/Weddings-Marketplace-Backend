@@ -22,7 +22,6 @@ const createCategory = async (req, res) => {
 }
 
 const getCategories = async (req, res) => {
-    try {
         const categories = await Category.find({})
         .populate("annonces", "title description price")
         .exec();
@@ -30,9 +29,7 @@ const getCategories = async (req, res) => {
             message: 'Categories retrieved successfully',
             categories: categories
         });
-    } catch (err) {
-        res.status(500).send({"Error": "Internal Server Error"})
-    }
+    
 }
 
 const getCategoriesNames = async (req, res) => {

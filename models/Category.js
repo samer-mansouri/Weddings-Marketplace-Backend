@@ -18,6 +18,14 @@ const CategorySchema = new mongoose.Schema({
 
 CategorySchema.set('toJSON', { virtuals: true })
 
+CategorySchema.virtual("annonces", {
+    ref: "Annonce",
+    foreignField: "categoryId",
+    localField: "_id"
+  });
+  
+  
+
 
 CategorySchema.plugin(timestamps);
 mongoose.model("Category", CategorySchema)

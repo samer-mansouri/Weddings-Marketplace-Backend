@@ -22,3 +22,4 @@ exports.connect = () => {
 require('../models/User');
 require('../models/Category');
 require('../models/Annonce');
+require('../models/Reservation');
