@@ -9,6 +9,10 @@ const cloudinary = require('../config/cloudinary');
 const { validateUser, initializeUser } = require('../helpers/UserHelpers')
 const profilePicLink = 'https://res.cloudinary.com/daoeyqp1y/image/upload/v1650154718/idat0nakfbvdbiateuw3.png'
 
+let capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 let createUser = async (req, res) =>{
     
 
@@ -35,12 +39,10 @@ let createUser = async (req, res) =>{
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
         initializeUser(
-          req.body.firstName,
-           req.body.lastName,
-           req.body.dateOfBirth,
+          capitalizeFirstLetter(req.body.firstName),
+          capitalizeFirstLetter(req.body.lastName),
            profilePicLink,
            req.body.address,
-           req.body.phoneNumber,           
            req.body.email,
            req.body.gender,
            req.body.role,

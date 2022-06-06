@@ -7,29 +7,34 @@ const cloudinary = require('../config/cloudinary');
 
 let createAnnonce = async (req, res) => {
         let pics = req.files;
+        console.log(req.files)
+        let userId = req.user;
         if(!pics){
             res.status(400).send({"Error": "No pictures provided"})
         }
 
-        let multiplePicsPromise = pics.map((pic) => 
+        let multiplePicsPromise = await pics.map((pic) => 
             cloudinary.uploader.upload(pic.path)
         );
         let imageResponses = await Promise.all(multiplePicsPromise);
 
-        
-        const annonce = new Annonce({
+        const newAnnonce = await new Annonce({
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
             categoryId: req.body.categoryId,
-            images: imageResponses.map((image) => image.secure_url),
-            userId: req.user
+            userId: userId,
+            images: imageResponses.map((pic) => pic.secure_url)
         });
-        const savedAnnonce = await annonce.save();
+
+        
+        await newAnnonce.save();
         res.send({
             message: 'Annonce created successfully',
-            annonce: savedAnnonce
+            annonce: newAnnonce
         });
+
+        
 
 }
 

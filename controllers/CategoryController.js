@@ -35,7 +35,7 @@ const getCategories = async (req, res) => {
 const getCategoriesNames = async (req, res) => {
     try {
         const categories = await Category.find({})
-        .select("name")
+        .select("_id name")
         .exec();
         res.send({
             message: 'Categories names retrieved successfully',
@@ -50,7 +50,7 @@ const getCategoriesNames = async (req, res) => {
 const getCategory = async (req, res) => {
     try {
         const category = await Category.findById(req.params.id)
-        .populate("annonces", "title description price")
+        .populate("annonces", "title description price images")
         .exec();
         res.send({
             message: 'Category retrieved successfully',

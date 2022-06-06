@@ -27,22 +27,12 @@ const UserSchema = new mongoose.Schema({
     maxLength: 55,
     required : 'This field is required'
   },
-  dateOfBirth : {
-    type: Date,
-    required : 'This field is required'
-  },
   picture: {
     type: String,
     required: true,
   },
   address:{
     type: String,
-    required: 'This field is required'
-  },
-  phoneNumber: {
-    type: String,
-    minLength: 8,
-    maxLength: 8,
     required: 'This field is required'
   },
   email : {
