@@ -6,7 +6,8 @@ const createReservation = async (req, res) => {
     const reservation = new Reservation({
         userId: req.user,
         receiver: req.body.receiver,
-        annonceId: req.body.annonceId
+        annonceId: req.body.annonceId,
+        reservationDate: req.body.reservationDate
     });
     const savedReservation = await reservation.save();
     res.send({
@@ -18,7 +19,8 @@ const createReservation = async (req, res) => {
 const getUserReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find({userId: req.user})
-        .populate("annonceId", "title description price")
+        .populate("annonce", "title description price")
+        .populate("annonceur", "firstName lastName picture")
         .exec();
         res.send({
             message: 'Reservations retrieved successfully',
@@ -32,7 +34,8 @@ const getUserReservations = async (req, res) => {
 const getReceiverReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find({receiver: req.user})
-        .populate("annonceId", "title description price")
+        .populate("user", "firstName lastName picture")
+        .populate("annonce", "title description price")
         .exec();
         res.send({
             message: 'Reservations retrieved successfully',
@@ -44,9 +47,22 @@ const getReceiverReservations = async (req, res) => {
 }
 
 
+const deleteReservation = async (req, res) => {
+    try {
+        const reservation = await Reservation.findByIdAndDelete(req.params.id);
+        res.send({
+            message: 'Reservation deleted successfully',
+            reservation: reservation
+        });
+    } catch (err) {
+        res.status(500).send({"Error": "Internal Server Error"})
+    }
+}
+
 
 module.exports = {
     createReservation,
     getUserReservations,
-    getReceiverReservations
+    getReceiverReservations,
+    deleteReservation
 }

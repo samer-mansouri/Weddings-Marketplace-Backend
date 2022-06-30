@@ -66,7 +66,6 @@ let createUser = async (req, res) =>{
 
 const getUser = async (req, res) => {
   const user = await User.findOne({ _id: req.params.id })
-  .populate('garage')
   .exec();
   if(!user){
     res.status(404).send({'message': 'User not found !'});
@@ -76,8 +75,9 @@ const getUser = async (req, res) => {
 }
 
 const getUsers = async (req, res) => {
-  const users = await User.find({})
-  .populate('garage')
+  const users = await User.find(
+    { $or:[ {'role': 'Client'}, {'role': 'Annonceur'}]}
+  )
   .exec();
   if(!users){
     res.status(404).send({'message': 'Users not found !'});
@@ -178,14 +178,14 @@ const handleRefreshToken = async (req, res) => {
 
 
 const updateUserInformations = (req, res) => {
-  if (req.body.email) {
-    User.find({ email: req.body.email })
+  if (req.body._id) {
+    User.find({ email: req.body._id })
 
     .then(user => {
-      if (user.length > 0 && user[0]._id != req.user) {
+      if (user.length > 0) {
         res.status(409).send({'message': 'Email already exists !'});
       } else {
-        User.findByIdAndUpdate(req.user , req.body, { new: true })
+        User.findByIdAndUpdate(req.body._id , req.body, { new: true })
         .then(user => {
           if (!user) {
             res.status(404).send({'message': 'User not found !'});
@@ -240,11 +240,11 @@ const updateUserProfilePicture = async (req, res) => {
 
 const deleteMyAccount = async (req, res) => {
   try {
-    const user = await User.findById(req.user);
+    const user = await User.findById(req.params.id)
     if (!user) {
       res.status(404).send({'message': 'User not found !'});
     } else {
-      await User.findByIdAndDelete(req.user);
+      await User.findByIdAndDelete(req.params.id);
       res.status(200).send({'message': 'User deleted successfully'});
     }
   } catch (error) {

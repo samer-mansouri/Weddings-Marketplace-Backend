@@ -41,7 +41,7 @@ let createAnnonce = async (req, res) => {
 const getAnnonces = async (req, res) => {
     try {
         const annonces = await Annonce.find({})
-        .populate("user", "firstName lastName picture")
+        .populate("user", "firstName lastName picture address")
         .populate("category", "name")
         .sort('-createdAt')
         .exec();
@@ -57,7 +57,7 @@ const getAnnonces = async (req, res) => {
 const getAnnonce = async (req, res) => {
     try {
         const annonce = await Annonce.findById(req.params.id)
-        .populate("user", "firstName lastName picture")
+        .populate("user", "firstName lastName picture address")
         .populate("category", "name")
         .exec();
         res.send({

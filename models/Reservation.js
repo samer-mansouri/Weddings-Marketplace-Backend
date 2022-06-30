@@ -14,6 +14,10 @@ const ReservationSchema = new mongoose.Schema({
     type: String,
     required: true
 },
+  reservationDate : {
+    type: Date, 
+    required: true
+  }
 });
 
 ReservationSchema.set('toJSON', { virtuals: true })
@@ -24,7 +28,13 @@ ReservationSchema.virtual("user", {
   localField: "userId"
 });
 
-ReservationSchema.virtual("Annonce", {
+ReservationSchema.virtual("annonceur", {
+  ref: "User",
+  foreignField: "_id",
+  localField: "receiver"
+});
+
+ReservationSchema.virtual("annonce", {
   ref: "Annonce",
   foreignField: "_id",
   localField: "annonceId"

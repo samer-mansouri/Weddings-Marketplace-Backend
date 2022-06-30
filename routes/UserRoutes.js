@@ -21,10 +21,10 @@ router.post('/login', handleLogin);
 router.post('/logout', handleLogout);
 router.post('/refresh', handleRefreshToken)
 router.get('/user/:id', getUser);
-//router.get('/users', getUsers);
+router.get('/users', getUsers);
 router.put('/updateuser', isAuthenticated, updateUserInformations);
 router.put('/uploadprofilepicture', isAuthenticated, upload.single('picture'), updateUserProfilePicture);
-router.delete('/deleteuser', isAuthenticated, deleteMyAccount);
+router.delete('/deleteuser/:id', isAuthenticated, deleteMyAccount);
 router.get('/test', isAuthenticated, (req, res) => {
     res.send({"Message": "Authenticated and able to see this"})
 })

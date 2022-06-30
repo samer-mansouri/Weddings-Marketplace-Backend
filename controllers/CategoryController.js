@@ -7,6 +7,7 @@ const cloudinary = require('../config/cloudinary');
 
 
 const createCategory = async (req, res) => {
+    
 
     const result = await cloudinary.uploader.upload(req.file.path);
     const category = new Category({
@@ -63,12 +64,7 @@ const getCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndUpdate(req.params.id, {
-            name: req.body.name,
-            picture: req.body.picture
-        }, {
-            new: true
-        });
+        const category = await Category.findByIdAndUpdate(req.params.id, req.body, {new: true});
         res.send({
             message: 'Category updated successfully',
             category: category
